@@ -153,6 +153,9 @@ export const uploadRecipe = async function (newRecipe) {
   
      
 }
+
+
+alert("由于数据源来自外网的API，测试正常功能需要科学上网")
   //   try {
   //     const ingredients = Object.entries(newRecipe)
   //       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
