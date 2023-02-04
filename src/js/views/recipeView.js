@@ -1,57 +1,6 @@
 import icons from 'url:../../img/icons.svg'
 import View from './View';
 
-const Fraction = function(numerator, denominator)
-{
-    /* double argument invocation */
-    if (typeof numerator !== 'undefined' && denominator) {
-        if (typeof(numerator) === 'number' && typeof(denominator) === 'number') {
-            this.numerator = numerator;
-            this.denominator = denominator;
-        } else if (typeof(numerator) === 'string' && typeof(denominator) === 'string') {
-            // what are they?
-            // hmm....
-            // assume they are ints?
-            this.numerator = parseInt(numerator);
-            this.denominator = parseInt(denominator);
-        }
-    /* single-argument invocation */
-    } else if (typeof denominator === 'undefined') {
-        num = numerator; // swap variable names for legibility
-        if (typeof(num) === 'number') {  // just a straight number init
-            this.numerator = num;
-            this.denominator = 1;
-        } else if (typeof(num) === 'string') {
-            var a, b;  // hold the first and second part of the fraction, e.g. a = '1' and b = '2/3' in 1 2/3
-                       // or a = '2/3' and b = undefined if we are just passed a single-part number
-            var arr = num.split(' ')
-            if (arr[0]) a = arr[0]
-            if (arr[1]) b = arr[1]
-            /* compound fraction e.g. 'A B/C' */
-            //  if a is an integer ...
-            if (a % 1 === 0 && b && b.match('/')) {
-                return (new Fraction(a)).add(new Fraction(b));
-            } else if (a && !b) {
-                /* simple fraction e.g. 'A/B' */
-                if (typeof(a) === 'string' && a.match('/')) {
-                    // it's not a whole number... it's actually a fraction without a whole part written
-                    var f = a.split('/');
-                    this.numerator = f[0]; this.denominator = f[1];
-                /* string floating point */
-                } else if (typeof(a) === 'string' && a.match('\.')) {
-                    return new Fraction(parseFloat(a));
-                /* whole number e.g. 'A' */
-                } else { // just passed a whole number as a string
-                    this.numerator = parseInt(a);
-                    this.denominator = 1;
-                }
-            } else {
-                return undefined; // could not parse
-            }
-        }
-    }
-    this.normalize();
-}
 class RecipeView extends View {
     _parentElement = document.querySelector('.recipe');
     _errorMessage= "Cannot find The Recipe ,please try another";
@@ -174,7 +123,7 @@ class RecipeView extends View {
         <svg class="recipe__icon">
         <use href="${icons}#icon-check"></use>
         </svg>
-        <div class="recipe__quantity">${ingredient.quantity?new Fraction(ingredient.quantity).toString():""}</div>
+        <div class="recipe__quantity">${ingredient.quantity?(ingredient.quantity).toString():""}</div>
         <div class="recipe__description">
         <span class="recipe__unit">${ingredient.unit}</span>
         ${ingredient.description}
